@@ -52,6 +52,7 @@ class Programm
                 catch (NegativeResultExeption e)
                 {
                     Console.WriteLine(e.Message);
+                    return;
                 }
                 break;
             case "x":
@@ -65,6 +66,7 @@ class Programm
                 catch (CalculatorExeption e)
                 {
                     Console.WriteLine(e.Message);
+                    return;
                 }
                 break;
             default:
@@ -100,7 +102,15 @@ class Programm
                     calc.Sum(num1, num2);
                     break;
                 case "-":
-                    calc.Sub(num1, num2);
+                    try
+                    {
+                        calc.Sub(num1, num2);
+                    }
+                    catch (NegativeResultExeption e)
+                    {
+                        Console.WriteLine(e.Message);
+                        return;
+                    }
                     break;
                 case "x":
                     calc.Mult(num1, num2);
@@ -113,8 +123,8 @@ class Programm
                     catch (CalculatorExeption e)
                     {
                         Console.WriteLine(e.Message);
+                        return;
                     }
-
                     break;
                 default:
                     Console.WriteLine("Вы ввели неверный знак операции");
