@@ -7,16 +7,37 @@ class Programm
         var calc = new Calculator();
         calc.ValuesCalculated += Calc_ValuesCalculated;
 
-        Console.WriteLine("Введите x");
         double num1 = 0;
-        double.TryParse(Console.ReadLine(), out num1);
+        bool parsedNum1 = false;
+        do
+        {
+            Console.WriteLine("Введите x");
+            parsedNum1 = UtilitiesClass.MyTryParse(Console.ReadLine(), out num1);
+
+            if (parsedNum1)
+            {
+                parsedNum1 = UtilitiesClass.MyTryValidate(num1);
+            }
+        }
+        while (!parsedNum1);
+
 
         Console.WriteLine("Введите операцию из (+, -, x, /)");
         string? operation = Console.ReadLine();
 
-        Console.WriteLine("Введите y");
         double num2 = 0;
-        double.TryParse(Console.ReadLine(), out num2);
+        bool parsedNum2 = false;
+        do
+        {
+            Console.WriteLine("Введите y");
+            parsedNum2 = UtilitiesClass.MyTryParse(Console.ReadLine(), out num2);
+
+            if (parsedNum2)
+            {
+                parsedNum2 = UtilitiesClass.MyTryValidate(num2);
+            }
+        }
+        while (!parsedNum2);
 
         switch (operation)
         {
@@ -24,19 +45,27 @@ class Programm
                 calc.Sum(num1, num2);
                 break;
             case "-":
-                calc.Sub(num1, num2);
+                try
+                {
+                    calc.Sub(num1, num2);
+                }
+                catch (NegativeResultExeption e)
+                {
+                    Console.WriteLine(e.Message);
+                }
                 break;
             case "x":
                 calc.Mult(num1, num2);
                 break;
             case "/":
-                if (num2 == 0)
+                try
                 {
-                    Console.WriteLine("Ошибка, деление на 0");
-                    return;
-                }
-                else
                     calc.Div(num1, num2);
+                }
+                catch (CalculatorExeption e)
+                {
+                    Console.WriteLine(e.Message);
+                }
                 break;
             default:
                 Console.WriteLine("Вы ввели неверный знак операции");
@@ -51,9 +80,19 @@ class Programm
             Console.WriteLine("Введите операцию из (+, -, x, /)");
             operation = Console.ReadLine();
 
-            Console.WriteLine("Введите y");
             num2 = 0;
-            double.TryParse(Console.ReadLine(), out num2);
+            parsedNum2 = false;
+            do
+            {
+                Console.WriteLine("Введите y");
+                parsedNum2 = UtilitiesClass.MyTryParse(Console.ReadLine(), out num2);
+
+                if (parsedNum2)
+                {
+                    parsedNum2 = UtilitiesClass.MyTryValidate(num2);
+                }
+            }
+            while (!parsedNum2);
 
             switch (operation)
             {
@@ -67,13 +106,15 @@ class Programm
                     calc.Mult(num1, num2);
                     break;
                 case "/":
-                    if (num2 == 0)
+                    try
                     {
-                        Console.WriteLine("Ошибка, деление на 0");
-                        return;
-                    }
-                    else
                         calc.Div(num1, num2);
+                    }
+                    catch (CalculatorExeption e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+
                     break;
                 default:
                     Console.WriteLine("Вы ввели неверный знак операции");
